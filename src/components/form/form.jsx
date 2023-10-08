@@ -1,54 +1,24 @@
-// export const Form = ({ name, number, onAddName, onAddNumber }) => {
-//   const handleSubmit = evt => {
-//     evt.preventDefault();
-//     const { name, number } = evt.target.elements;
-//     console.log(name, number);
-//   };
-//   return (
-//     <div>
-//       <form onSubmit={handleSubmit}>
-//         <label>Name</label>
-//         <input
-//           type="text"
-//           name="name"
-//           value={name}
-//           onChange={evt => onAddName(evt.target.value)}
-//           required
-//         />
-//         <label htmlFor="tel">Number</label>
-//         <input
-//           type="tel"
-//           value={number}
-//           name="number"
-//           onChange={evt => onAddNumber(evt.target.value)}
-//           required
-//         />
-//         <button type="submit">Add contact</button>
-//       </form>
-//     </div>
-//   );
-// };
-
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Btn, Cont, FormSt, Inp } from './form.styled';
+
 class Form extends Component {
   state = {
     name: '',
     number: '',
   };
   handleChange = evt => {
-    console.log(evt.currentTarget.name);
-    console.log(evt.currentTarget.value);
+    const inputName = evt.target.name;
+    const inputValue = evt.target.value;
+
     this.setState({
-      [evt.currentTarget.name]: [evt.currentTarget.value],
+      [inputName]: [inputValue],
     });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
-    console.log(this.state);
-    console.log(evt.currentTarget.elements.name);
-    // this.props.onSubmitForm(this.state);
+
     const newContact = {
       id: nanoid(),
       ...this.state,
@@ -65,25 +35,29 @@ class Form extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            required
-          />
-          <label htmlFor="tel">Number</label>
-          <input
-            type="tel"
-            value={this.state.number}
-            name="number"
-            onChange={this.handleChange}
-            required
-          />
-          <button type="submit">Add contact</button>
-        </form>
+        <Cont>
+          <FormSt onSubmit={this.handleSubmit}>
+            <label>Name</label>
+            <Inp
+              type="text"
+              name="name"
+              value={this.state.name}
+              onChange={this.handleChange}
+              pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$"
+              required
+            />
+            <label htmlFor="tel">Number</label>
+            <Inp
+              type="tel"
+              value={this.state.number}
+              name="number"
+              onChange={this.handleChange}
+              pattern="[a-zA-Z0-9]+"
+              required
+            />
+            <Btn type="submit">Add contact</Btn>
+          </FormSt>
+        </Cont>
       </div>
     );
   }
